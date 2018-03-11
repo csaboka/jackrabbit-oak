@@ -123,7 +123,8 @@ public class BlobIdTrackerTest {
         ScheduledFuture<?> scheduledFuture =
             scheduler.schedule(tracker.new SnapshotJob(), 0, TimeUnit.MILLISECONDS);
         scheduledFuture.get();
-        assertEquals("Extra elements after add", initAdd, retrieve(tracker));
+        
+        // retrieve() has side effects, avoid calling it between snapshot and remove
 
         remove(tracker, folder.newFile(), initAdd, range(1, 2));
 
