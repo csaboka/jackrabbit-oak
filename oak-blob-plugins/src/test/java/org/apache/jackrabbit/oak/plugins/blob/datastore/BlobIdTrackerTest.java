@@ -167,8 +167,9 @@ public class BlobIdTrackerTest {
         ScheduledFuture<?> scheduledFuture =
             scheduler.schedule(job, 0, TimeUnit.MILLISECONDS);
         scheduledFuture.get();
-        assertEquals("Extra elements after add", initAdd, retrieve(tracker));
 
+        // retrieve() has side effects, avoid calling it between snapshot and remove
+        
         remove(tracker, folder.newFile(), initAdd, range(1, 2));
         assertEquals("Extra elements after removes synced with datastore",
             initAdd, read(dataStore.getAllMetadataRecords(BLOBREFERENCES.getType())));
